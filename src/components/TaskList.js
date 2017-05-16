@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ListView, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, ListView, TouchableHighlight, Switch } from 'react-native';
 import TaskRow from './TaskRow/Component';
 
 const styles = StyleSheet.create({
@@ -47,6 +47,10 @@ export default class TaskList extends React.Component {
   render() {
     return (
         <View>
+            <View>
+                <Switch value={this.props.filter !== 'pending' } />
+                <Text>Showing {this.props.todos.length} {this.props.filter} todo(s)</Text>
+            </View>
             <ListView
                 dataSource={this.state.dataSource}
                 key={this.props.todos}

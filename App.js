@@ -2,24 +2,18 @@ import React from 'react';
 import { StyleSheet, Text, View, Navigator } from 'react-native';
 import TaskList from './src/components/TaskList.js';
 import TaskFrom from './src/components/TaskForm.js'
+import store from './todoStore';
+
+
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      todos: [
-        {
-          task: 'learn react native'
-        },
-        {
-          task: 'learn redux'
-        },
-        {
-          task: 'learn react styles'
-        }
-
-      ]
-    }
+    this.state = store.getState();
+    store.subscribe(() => {
+      this.setState(store.getState());
+    });
   }
 
   onAddStarted() {
@@ -35,10 +29,15 @@ export default class App extends React.Component {
   }
 
   onAdd(task) {
-    this.state.todos.push({task});
-    this.setState({
-      todos: this.state.todos
-    })
+    // this.state.todos.push({task});
+    // this.setState({
+    //   todos: this.state.todos
+    // })
+    store.dispatch({
+      type: 'ADD_TODO',
+      task
+    });
+
     this.nav.pop();
   }
 
@@ -47,12 +46,10 @@ export default class App extends React.Component {
   }
 
   onDone(todo) {
-    console.log('task was completed', todo);
-    const filteredTodos = 
-      this.state.todos.filter((filterTodo) => {
-        return filterTodo !== todo;
-      })
-      this.setState({todos: filteredTodos})
+    store.dispatch({
+      type: 'DONE_TODO',
+      todo
+    })
   }
 
   renderScene(route, nav) {
@@ -66,7 +63,7 @@ export default class App extends React.Component {
       default:
         return (
           <View style={styles.container}>
-            <TaskList 
+            <TaskList
                 todos={this.state.todos} 
                 onAddStarted={this.onAddStarted.bind(this)} 
                 onDone={this.onDone.bind(this)}
