@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ListView, TouchableHighlight } from 'react-native';
-import TaskRow from './TaskRow.js';
+import TaskRow from './TaskRow/Component';
 
 const styles = StyleSheet.create({
   button: {
